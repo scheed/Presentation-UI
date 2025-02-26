@@ -22,11 +22,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    .tile-container {
+      width: 100%; /* Let the tiles expand to fill the row */
+      gap: 10px;
+    }
   }
   
   .split-row {
     display: flex;
     justify-content: space-between;
+    .column {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
   }
   
   .column {
@@ -45,8 +56,8 @@
   }
   
   .tile {
-    width: 128px;
-    height: 128px;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ensures a square tile */
     display: flex;
     align-items: center;
     justify-content: center;
