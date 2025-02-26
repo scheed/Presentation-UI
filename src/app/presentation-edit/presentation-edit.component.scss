@@ -17,7 +17,8 @@
   
   .content {
     display: flex;
-    flex: 1; /* Takes up remaining height */
+    flex: 1;
+    overflow: hidden; /* Prevents scrolling on the parent container */
   }
   
   .nav-container,
@@ -96,4 +97,4 @@
   
   .content-button:active {
     cursor: grabbing;
-  }
+  } 

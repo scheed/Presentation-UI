@@ -1,6 +1,14 @@
-.presentation-container {
+
+  :host {
+    display: block;
+    height: 100%;
+  }
+  
+  .presentation-container {
+    height: 100%;
+    overflow-y: auto; /* Enables vertical scrolling */
+    background-color: white;
     padding: 10px;
-    background: #f4f4f4;
   }
   
   .row {
