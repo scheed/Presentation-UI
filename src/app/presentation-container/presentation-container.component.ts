@@ -1,16 +1,20 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor,NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { PresentationRow, Tile } from '../models/presentation.model';
 
 @Component({
   selector: 'app-presentation-container',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor,NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault],
   templateUrl: './presentation-container.component.html',
   styleUrls: ['./presentation-container.component.scss'],
 })
 export class PresentationContainerComponent {
+  
   rows: PresentationRow[] = [];
+
+  sampleText: string =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
   addCenteredRow() {
     this.rows.push({
@@ -27,8 +31,26 @@ export class PresentationContainerComponent {
     });
   }
 
-  addTileToRow(rowIndex: number, position: 'center' | 'left' | 'right', tileType: 'Text' | 'Image' | 'Map' | 'Table') {
-    const newTile = new Tile(Date.now(), tileType, `New ${tileType}`);
+  // Helper to determine tile content based on its type
+  private getTileContent(tileType: 'Text' | 'Image' | 'Map' | 'Table'): string {
+    if (tileType === 'Text') {
+      return this.sampleText;
+    } else if (tileType === 'Map') {
+      return 'assets/images/Sample_Map.png'; // adjust path as needed
+    } else if (tileType === 'Image') {
+      return 'assets/images/Sample_Image.jpg'; // adjust path as needed
+    } else {
+      return `New ${tileType}`;
+    }
+  }
+  
+  addTileToRow(
+    rowIndex: number,
+    position: 'center' | 'left' | 'right',
+    tileType: 'Text' | 'Image' | 'Map' | 'Table'
+  ) {
+    const content = this.getTileContent(tileType);
+    const newTile = new Tile(Date.now(), tileType, content);
 
     if (this.rows[rowIndex].type === 'centered' && position === 'center') {
       this.rows[rowIndex].centerTiles?.push(newTile);
@@ -52,12 +74,12 @@ export class PresentationContainerComponent {
     if (event.dataTransfer) {
       const tileType = event.dataTransfer.getData('text/plain') as 'Text' | 'Image' | 'Map' | 'Table';
       if (tileType) {
-        const newTile = new Tile(Date.now(), tileType, `New ${tileType}`);
-        // Get the drop container element (the element with the drop handler)
+        const content = this.getTileContent(tileType);
+        const newTile = new Tile(Date.now(), tileType, content);
+
+        // Determine insertion index based on drop position within the container
         const dropContainer = event.currentTarget as HTMLElement;
-        // Use the event's clientY position to calculate where to insert
         const dropY = event.clientY;
-        // Get all child elements with the class "tile"
         const children = Array.from(dropContainer.querySelectorAll('.tile'));
         let insertIndex = children.length;
         for (let i = 0; i < children.length; i++) {
@@ -70,14 +92,12 @@ export class PresentationContainerComponent {
         }
         const row = this.rows[rowIndex];
         if (row.type === 'centered' && position === 'center') {
-          if (row.centerTiles) {
-            row.centerTiles.splice(insertIndex, 0, newTile);
-          }
+          row.centerTiles?.splice(insertIndex, 0, newTile);
         } else if (row.type === 'split') {
-          if (position === 'left' && row.leftTiles) {
-            row.leftTiles.splice(insertIndex, 0, newTile);
-          } else if (position === 'right' && row.rightTiles) {
-            row.rightTiles.splice(insertIndex, 0, newTile);
+          if (position === 'left') {
+            row.leftTiles?.splice(insertIndex, 0, newTile);
+          } else if (position === 'right') {
+            row.rightTiles?.splice(insertIndex, 0, newTile);
           }
         }
       }

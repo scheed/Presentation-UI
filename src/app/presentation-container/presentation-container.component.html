@@ -3,37 +3,76 @@
     <button (click)="addSplitRow()">Add Split Row</button>
   
     <div *ngFor="let row of rows; let rowIndex = index" class="row">
-      <!-- Centered Row: Drop target in the center -->
-      <div 
-        *ngIf="row.type === 'centered'" 
-        class="centered-row drop-target" 
-        (dragover)="allowDrop($event)" 
+      <!-- Centered Row -->
+      <div
+        *ngIf="row.type === 'centered'"
+        class="centered-row drop-target"
+        (dragover)="allowDrop($event)"
         (drop)="onDrop($event, rowIndex, 'center')"
       >
         <div *ngFor="let tile of row.centerTiles" class="tile">
-          {{ tile.type }}: {{ tile.content }}
+          <ng-container [ngSwitch]="tile.type">
+            <ng-container *ngSwitchCase="'Text'">
+              <div class="tile-text">{{ tile.content }}</div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Image'">
+              <img [src]="tile.content" alt="Image Tile" class="tile-image" />
+            </ng-container>
+            <ng-container *ngSwitchCase="'Map'">
+              <img [src]="tile.content" alt="Map Tile" class="tile-image" />
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              {{ tile.type }}: {{ tile.content }}
+            </ng-container>
+          </ng-container>
         </div>
       </div>
   
-      <!-- Split Row: Two drop targets -->
+      <!-- Split Row -->
       <div *ngIf="row.type === 'split'" class="split-row">
-        <div 
-          class="column drop-target" 
-          (dragover)="allowDrop($event)" 
+        <div
+          class="column drop-target"
+          (dragover)="allowDrop($event)"
           (drop)="onDrop($event, rowIndex, 'left')"
         >
           <div *ngFor="let tile of row.leftTiles" class="tile">
-            {{ tile.type }}: {{ tile.content }}
+            <ng-container [ngSwitch]="tile.type">
+              <ng-container *ngSwitchCase="'Text'">
+                <div class="tile-text">{{ tile.content }}</div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'Image'">
+                <img [src]="tile.content" alt="Image Tile" class="tile-image" />
+              </ng-container>
+              <ng-container *ngSwitchCase="'Map'">
+                <img [src]="tile.content" alt="Map Tile" class="tile-image" />
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ tile.type }}: {{ tile.content }}
+              </ng-container>
+            </ng-container>
           </div>
         </div>
   
-        <div 
-          class="column drop-target" 
-          (dragover)="allowDrop($event)" 
+        <div
+          class="column drop-target"
+          (dragover)="allowDrop($event)"
           (drop)="onDrop($event, rowIndex, 'right')"
         >
           <div *ngFor="let tile of row.rightTiles" class="tile">
-            {{ tile.type }}: {{ tile.content }}
+            <ng-container [ngSwitch]="tile.type">
+              <ng-container *ngSwitchCase="'Text'">
+                <div class="tile-text">{{ tile.content }}</div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'Image'">
+                <img [src]="tile.content" alt="Image Tile" class="tile-image" />
+              </ng-container>
+              <ng-container *ngSwitchCase="'Map'">
+                <img [src]="tile.content" alt="Map Tile" class="tile-image" />
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ tile.type }}: {{ tile.content }}
+              </ng-container>
+            </ng-container>
           </div>
         </div>
       </div>
