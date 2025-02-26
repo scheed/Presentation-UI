@@ -1,0 +1,81 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height of viewport */
+  }
+  
+  .presentation-edit-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .menubar {
+    height: 50px;
+    background-color: blue;
+  }
+  
+  .content {
+    display: flex;
+    flex: 1; /* Takes up remaining height */
+  }
+  
+  .nav-container,
+  .layout-container {
+    flex: 1;
+    background-color: lightgray;
+  }
+  
+  .presentation-container {
+    flex: 2;
+    background-color: white;
+  }
+  
+  .layout-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    background: darkgray;
+    padding: 10px;
+  }
+  
+  .tabs button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: lightgray;
+  }
+  
+  .tabs button.active {
+    background: white;
+    font-weight: bold;
+  }
+  
+  .tab-content {
+    flex: 1;
+    padding: 10px;
+  }
+  
+  .add-content-tab {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .content-button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: white;
+    border: 1px solid gray;
+    text-align: center;
+  }
+  
+  .content-button:hover {
+    background: lightblue;
+  }

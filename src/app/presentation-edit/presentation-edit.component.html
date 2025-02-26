@@ -1,0 +1,22 @@
+<div class="presentation-edit-container">
+    <div class="menubar"></div>
+    <div class="content">
+      <div class="nav-container"></div>
+      <div class="presentation-container">
+        <app-presentation-container></app-presentation-container>
+      </div>
+      <div class="layout-container">
+        <div class="tabs">
+          <button [class.active]="selectedTab === 'layout'" (click)="selectTab('layout')">Layout</button>
+          <button [class.active]="selectedTab === 'add-content'" (click)="selectTab('add-content')">Add Content</button>
+        </div>
+        <div class="tab-content">
+          <div *ngIf="selectedTab === 'layout'" class="layout-tab"></div>
+          <div *ngIf="selectedTab === 'add-content'" class="add-content-tab">
+            <button *ngFor="let item of contentItems" class="content-button">{{ item }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
