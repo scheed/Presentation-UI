@@ -3,37 +3,38 @@
     <button (click)="addSplitRow()">Add Split Row</button>
   
     <div *ngFor="let row of rows; let rowIndex = index" class="row">
-      <div *ngIf="row.type === 'centered'" class="centered-row">
-        <div class="tile-container">
-          <div *ngFor="let tile of row.centerTiles" class="tile">
-            {{ tile.type }}: {{ tile.content }}
-          </div>
+      <!-- Centered Row: Drop target in the center -->
+      <div 
+        *ngIf="row.type === 'centered'" 
+        class="centered-row drop-target" 
+        (dragover)="allowDrop($event)" 
+        (drop)="onDrop($event, rowIndex, 'center')"
+      >
+        <div *ngFor="let tile of row.centerTiles" class="tile">
+          {{ tile.type }}: {{ tile.content }}
         </div>
-        <button (click)="addTileToRow(rowIndex, 'center', 'Text')">+ Text</button>
-        <button (click)="addTileToRow(rowIndex, 'center', 'Image')">+ Image</button>
-        <button (click)="addTileToRow(rowIndex, 'center', 'Map')">+ Map</button>
-        <button (click)="addTileToRow(rowIndex, 'center', 'Table')">+ Table</button>
       </div>
   
+      <!-- Split Row: Two drop targets -->
       <div *ngIf="row.type === 'split'" class="split-row">
-        <div class="column">
+        <div 
+          class="column drop-target" 
+          (dragover)="allowDrop($event)" 
+          (drop)="onDrop($event, rowIndex, 'left')"
+        >
           <div *ngFor="let tile of row.leftTiles" class="tile">
             {{ tile.type }}: {{ tile.content }}
           </div>
-          <button (click)="addTileToRow(rowIndex, 'left', 'Text')">+ Text</button>
-          <button (click)="addTileToRow(rowIndex, 'left', 'Image')">+ Image</button>
-          <button (click)="addTileToRow(rowIndex, 'left', 'Map')">+ Map</button>
-          <button (click)="addTileToRow(rowIndex, 'left', 'Table')">+ Table</button>
         </div>
   
-        <div class="column">
+        <div 
+          class="column drop-target" 
+          (dragover)="allowDrop($event)" 
+          (drop)="onDrop($event, rowIndex, 'right')"
+        >
           <div *ngFor="let tile of row.rightTiles" class="tile">
             {{ tile.type }}: {{ tile.content }}
           </div>
-          <button (click)="addTileToRow(rowIndex, 'right', 'Text')">+ Text</button>
-          <button (click)="addTileToRow(rowIndex, 'right', 'Image')">+ Image</button>
-          <button (click)="addTileToRow(rowIndex, 'right', 'Map')">+ Map</button>
-          <button (click)="addTileToRow(rowIndex, 'right', 'Table')">+ Table</button>
         </div>
       </div>
     </div>

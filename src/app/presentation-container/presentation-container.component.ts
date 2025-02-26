@@ -40,4 +40,35 @@ export class PresentationContainerComponent {
       }
     }
   }
+
+  onDragStart(event: DragEvent, tileType: 'Text' | 'Image' | 'Map' | 'Table') {
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('text/plain', tileType);
+    }
+  }
+
+  onDrop(event: DragEvent, rowIndex: number, position: 'center' | 'left' | 'right') {
+    event.preventDefault();
+    if (event.dataTransfer) {
+      const tileType = event.dataTransfer.getData('text/plain') as 'Text' | 'Image' | 'Map' | 'Table';
+      if (tileType) {
+        const newTile = new Tile(Date.now(), tileType, `New ${tileType}`);
+        const row = this.rows[rowIndex];
+
+        if (row.type === 'centered' && position === 'center') {
+          row.centerTiles?.push(newTile);
+        } else if (row.type === 'split') {
+          if (position === 'left') {
+            row.leftTiles?.push(newTile);
+          } else if (position === 'right') {
+            row.rightTiles?.push(newTile);
+          }
+        }
+      }
+    }
+  }
+
+  allowDrop(event: DragEvent) {
+    event.preventDefault();
+  }
 }

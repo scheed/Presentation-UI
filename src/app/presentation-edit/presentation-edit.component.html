@@ -13,7 +13,14 @@
         <div class="tab-content">
           <div *ngIf="selectedTab === 'layout'" class="layout-tab"></div>
           <div *ngIf="selectedTab === 'add-content'" class="add-content-tab">
-            <button *ngFor="let item of contentItems" class="content-button">{{ item }}</button>
+            <button 
+                *ngFor="let item of contentItems" 
+                class="content-button" 
+                draggable="true" 
+                (dragstart)="onDragStart($event, item)"
+            >
+                {{ item }}
+            </button>
           </div>
         </div>
       </div>
