@@ -53,15 +53,31 @@ export class PresentationContainerComponent {
       const tileType = event.dataTransfer.getData('text/plain') as 'Text' | 'Image' | 'Map' | 'Table';
       if (tileType) {
         const newTile = new Tile(Date.now(), tileType, `New ${tileType}`);
+        // Get the drop container element (the element with the drop handler)
+        const dropContainer = event.currentTarget as HTMLElement;
+        // Use the event's clientY position to calculate where to insert
+        const dropY = event.clientY;
+        // Get all child elements with the class "tile"
+        const children = Array.from(dropContainer.querySelectorAll('.tile'));
+        let insertIndex = children.length;
+        for (let i = 0; i < children.length; i++) {
+          const rect = children[i].getBoundingClientRect();
+          const midpoint = rect.top + rect.height / 2;
+          if (dropY < midpoint) {
+            insertIndex = i;
+            break;
+          }
+        }
         const row = this.rows[rowIndex];
-
         if (row.type === 'centered' && position === 'center') {
-          row.centerTiles?.push(newTile);
+          if (row.centerTiles) {
+            row.centerTiles.splice(insertIndex, 0, newTile);
+          }
         } else if (row.type === 'split') {
-          if (position === 'left') {
-            row.leftTiles?.push(newTile);
-          } else if (position === 'right') {
-            row.rightTiles?.push(newTile);
+          if (position === 'left' && row.leftTiles) {
+            row.leftTiles.splice(insertIndex, 0, newTile);
+          } else if (position === 'right' && row.rightTiles) {
+            row.rightTiles.splice(insertIndex, 0, newTile);
           }
         }
       }
